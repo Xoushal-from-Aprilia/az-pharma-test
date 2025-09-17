@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
@@ -7,11 +7,13 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Playfair+Display:wght@700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
     :root {
         --pharma-green: #0A9131;
         --pharma-green-dark: #085E21;
+        --welcome-bg-green: #1E392A;
+        --welcome-accent-green: #90d694;
         /* Variabili per l'effetto tilt 3D */
         --rotateX: 0deg;
         --rotateY: 0deg;
@@ -24,8 +26,29 @@
     }
     .bg-pharma-green { background-color: var(--pharma-green); }
     .text-pharma-green { color: var(--pharma-green); }
+
+    /* --- FONT SPECIALI PER LA SEZIONE DI BENVENUTO --- */
+    .font-serif-display { font-family: 'Playfair Display', serif; }
+    .font-script-display { font-family: 'Dancing Script', cursive; }
+
+    /* --- NUOVA ANIMAZIONE: Welcome Section Text --- */
+    .welcome-text-animation {
+        animation: fadeInSlideUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    .welcome-line-1 { animation-delay: 0.2s; }
+    .welcome-line-2 { animation-delay: 0.6s; }
+    .welcome-line-3 { animation-delay: 1.2s; }
+
+    @keyframes fadeInSlideUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
     
-    /* --- NUOVA ANIMAZIONE: Staggered Reveal on Scroll --- */
+    /* --- ANIMAZIONE: Staggered Reveal on Scroll --- */
     .reveal {
         opacity: 0;
         transform: translateY(30px);
@@ -35,14 +58,13 @@
         opacity: 1;
         transform: translateY(0);
     }
-    /* Aggiungiamo ritardi per un effetto a cascata */
     .reveal-delay-1 { transition-delay: 150ms; }
     .reveal-delay-2 { transition-delay: 300ms; }
     .reveal-delay-3 { transition-delay: 450ms; }
     .reveal-delay-4 { transition-delay: 600ms; }
     .reveal-delay-5 { transition-delay: 750ms; }
 
-    /* Gradiente animato per sfondo catalogo (invariato) */
+    /* Gradiente animato per sfondo catalogo */
     .animated-gradient-bg {
         background: linear-gradient(-45deg, #f8fafc, #e6f7f2, #f8fafc, #d1f3e9);
         background-size: 400% 400%;
@@ -55,11 +77,11 @@
         100% { background-position: 0% 50%; }
     }
     
-    /* --- NUOVO EFFETTO: 3D Tilt Interattivo sulle Card --- */
+    /* --- EFFETTO: 3D Tilt Interattivo sulle Card --- */
     .category-card {
         transform-style: preserve-3d;
         transform: perspective(1000px);
-        transition: transform 0.2s ease-out; /* Transizione più morbida */
+        transition: transform 0.2s ease-out;
     }
     .category-card .card-content {
         position: relative;
@@ -71,7 +93,6 @@
         transform: translateY(-5px) translateZ(30px) rotateX(var(--rotateX)) rotateY(var(--rotateY));
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
-    /* Aggiungiamo un effetto "glow" che segue il mouse */
     .card-content::before {
         content: '';
         position: absolute;
@@ -79,14 +100,14 @@
         background: radial-gradient(circle at var(--glow-x) var(--glow-y), rgba(10, 145, 49, 0.1), transparent 40%);
         opacity: 0;
         transition: opacity 0.4s ease;
-        border-radius: 0.5rem; /* Stesso raggio del bordo della card */
+        border-radius: 0.5rem;
     }
     .category-card:hover .card-content::before {
         opacity: 1;
     }
 
 
-    /* --- NUOVO EFFETTO: Bottone Magnetico --- */
+    /* --- EFFETTO: Bottone Magnetico --- */
     .magnetic-button {
         transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
@@ -98,7 +119,7 @@
          @apply bg-white text-pharma-green border-2 border-pharma-green font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300;
     }
     
-    /* Stili per la modale (invariato) */
+    /* Stili per la modale */
     #product-modal { transition: opacity 0.3s ease-in-out, visibility 0.3s; }
     #product-modal-content {
         transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease-in-out;
@@ -110,7 +131,7 @@
         opacity: 1;
     }
 
-    /* --- NUOVA ANIMAZIONE: Prodotti nella modale --- */
+    /* --- ANIMAZIONE: Prodotti nella modale --- */
     .product-item {
         opacity: 0;
         transform: translateY(20px);
@@ -121,7 +142,7 @@
 <body class="bg-slate-50 text-gray-800">
 
 <!-- Header con Logo Centrato -->
-<header id="main-header" class="w-full py-6">
+<header id="main-header" class="w-full py-6 absolute top-0 left-0 z-10">
     <div class="container mx-auto px-6 flex justify-center items-center">
         <a href="#" class="reveal">
             <img src="/pharmaLogo.jpeg" alt="Logo AZ Farma Packaging" class="h-16 w-auto">
@@ -130,6 +151,19 @@
 </header>
 
 <main>
+    <!-- NUOVA SEZIONE DI BENVENUTO -->
+    <section id="welcome" class="min-h-screen flex items-center justify-center text-center p-6 overflow-hidden" style="background-color: var(--welcome-bg-green);">
+        <div class="text-white">
+            <h1 class="font-serif-display text-6xl md:text-8xl lg:text-9xl font-bold leading-none">
+                <span class="block welcome-text-animation welcome-line-1">Fatti notare,</span>
+                <span class="block welcome-text-animation welcome-line-2">anche nei</span>
+            </h1>
+            <p class="font-script-display text-6xl md:text-8xl lg:text-9xl mt-4 md:mt-2 welcome-text-animation welcome-line-3" style="color: var(--welcome-accent-green);">
+                dettagli.
+            </p>
+        </div>
+    </section>
+
     <!-- Sezione Catalogo Prodotti -->
     <section id="catalogo" class="py-20 sm:py-24 animated-gradient-bg overflow-hidden">
         <div class="container mx-auto px-6">
@@ -152,16 +186,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Categoria Etichette e Nastri -->
-                <div class="category-card reveal reveal-delay-3" data-category="etichette">
-                    <div class="card-content bg-white rounded-lg shadow-lg overflow-hidden group cursor-pointer h-full flex flex-col">
-                        <div class="h-48 bg-cover bg-center" style="background-image: url('/articoli/etichette.jpg')"></div>
-                        <div class="p-6 flex-grow">
-                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-pharma-green transition-colors duration-300">Etichette e Nastri</h3>
-                            <p class="mt-2 text-gray-500">Elettroniche, adesivi, sigilli e nastri.</p>
-                        </div>
-                    </div>
-                </div>
+
                 <!-- Categoria Articoli Promozionali -->
                 <div class="category-card reveal reveal-delay-4" data-category="promozionali">
                     <div class="card-content bg-white rounded-lg shadow-lg overflow-hidden group cursor-pointer h-full flex flex-col">
@@ -172,18 +197,19 @@
                         </div>
                     </div>
                 </div>
-                <!-- Categoria Attrezzatura per Farmacia -->
-                <div class="category-card reveal reveal-delay-5" data-category="attrezzatura">
+                
+                <div class="category-card reveal reveal-delay-3" data-category="etichette">
                     <div class="card-content bg-white rounded-lg shadow-lg overflow-hidden group cursor-pointer h-full flex flex-col">
-                        <div class="h-48 bg-cover bg-center" style="background-image: url('/articoli/code.jpg')"></div>
+                        <div class="h-48 bg-cover bg-center" style="background-image: url('/articoli/etichette.jpg')"></div>
                         <div class="p-6 flex-grow">
-                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-pharma-green transition-colors duration-300">Attrezzatura Farmacia</h3>
-                            <p class="mt-2 text-gray-500">Prezzatrici, elimina-code e cestini.</p>
+                            <h3 class="text-xl font-bold text-gray-800 group-hover:text-pharma-green transition-colors duration-300">Etichette e Nastri</h3>
+                            <p class="mt-2 text-gray-500">Elettroniche, adesivi, sigilli e nastri.</p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+                
+                <!-- Categoria Attrezzatura per Farmacia -->
+                
     </section>
 
     <!-- Sezione Contatti -->
@@ -205,7 +231,7 @@
 <!-- Footer -->
 <footer class="bg-gray-800 text-white">
     <div class="container mx-auto px-6 py-10 text-center">
-        <p class="reveal">© 2024 AZ Farma Packaging. Tutti i diritti riservati.</p>
+        <p class="reveal">© 2025 AZ Farma Packaging. Tutti i diritti riservati.</p>
         <p class="text-sm text-gray-400 mt-2 reveal reveal-delay-1">Via della villa 54, 00145 Roma | P.IVA 07170791003</p>
     </div>
 </footer>
@@ -229,68 +255,54 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // --- DATI DEI PRODOTTI (immagini aggiornate per il test) ---
+        // --- DATI DEI PRODOTTI (DESCRIZIONI AGGIORNATE) ---
         const productsData = {
             shoppers: {
                 title: 'Shopper e Sacchetti',
                 items: [
                     { name: 'Shopper Manico a Fagiolo', img: '/articoli/shoppers/Screenshot_2025-09-09-11-45-40-253_com.brave.browser_nightly-edit.jpg', desc: 'Shopper ecologiche e resistenti, personalizzabili con il tuo logo. Ideali per una farmacia attenta all\'ambiente.', minQty: 10 },
                     { name: 'Shopper Manico a Canottiera', img: '/articoli/shoppers/Screenshot_2025-09-09-11-45-58-124_com.brave.browser_nightly-edit.jpg', desc: 'Classici sacchetti in carta di varie grammature, perfetti per contenere medicinali e piccoli prodotti.', minQty: 350 },
-                    { name: 'Sacchetti di Carta', img: '/articoli/shoppers/Screenshot_2025-09-09-11-56-29-091_com.brave.browser_nightly-edit.jpg', desc: 'Descrizione per il nuovo prodotto da inserire.', minQty: 100 },
-                    
-                    { name: 'Carta da banco', img: '/articoli/shoppers/Screenshot_2025-09-09-11-56-50-811_com.brave.browser_nightly-edit.jpg', desc: 'Descrizione per il nuovo prodotto da inserire..', minQty: 100 },
-                    
+                    { name: 'Sacchetti di Carta', img: '/articoli/shoppers/Screenshot_2025-09-09-11-56-29-091_com.brave.browser_nightly-edit.jpg', desc: 'Versatili sacchetti di carta, disponibili in varie misure per ogni esigenza di confezionamento.', minQty: 100 },
+                    { name: 'Carta da banco', img: '/articoli/shoppers/Screenshot_2025-09-09-11-56-50-811_com.brave.browser_nightly-edit.jpg', desc: 'Carta da banco personalizzabile, ideale per avvolgere prodotti e rafforzare l\'immagine del brand.', minQty: 100 },
                     { name: 'Shopper carta Piattina', img: '/articoli/shoppers/Screenshot_2025-09-09-11-46-26-583_com.brave.browser_nightly-edit.jpg', desc: 'Borse in Tessuto Non Tessuto riutilizzabili, un ottimo veicolo pubblicitario per la tua farmacia.', minQty: 200 },
-                    { name: 'Shopper carta colorate piattina', img: '/articoli/shoppers/Screenshot_2025-09-09-11-46-37-231_com.brave.browser_nightly-edit.jpg', desc: 'Pratiche sacche a zainetto in poliestere, personalizzabili e perfette come gadget promozionale.', minQty: 250 },
-                    // --- NUOVI SPAZI SHOPPER ---
-                    { name: 'Shopper Carta Cordino', img: '/articoli/shoppers/Screenshot_2025-09-09-11-46-48-724_com.brave.browser_nightly-edit.jpg', desc: 'Descrizione per il nuovo prodotto da inserire.', minQty: 100 },
-                    { name: 'Shopper carta colorate Cordino', img: '/articoli/shoppers/Screenshot_2025-09-09-11-46-57-791_com.brave.browser_nightly-edit.jpg', desc: 'Descrizione per il nuovo prodotto da inserire.', minQty: 100 },
-                    { name: 'Shopper carta di Lusso', img: '/articoli/shoppers/Screenshot_2025-09-09-11-47-10-316_com.brave.browser_nightly-edit.jpg', desc: 'Descrizione per il nuovo prodotto da inserire.', minQty: 100 },
-                    { name: 'Shopper in TNT', img: '/articoli/shoppers/Screenshot_2025-09-09-11-47-31-170_com.brave.browser_nightly-edit.jpg', desc: 'Descrizione per il nuovo prodotto da inserire.', minQty: 100 },
-                    { name: 'Shopper con soffietto in TNT', img: '/articoli/shoppers/Screenshot_2025-09-09-11-47-40-802_com.brave.browser_nightly-edit.jpg', desc: 'Descrizione per il nuovo prodotto da inserire.', minQty: 100 },
-                    
-                    
-                ]
-            },
-            etichette: {
-                title: 'Etichette e Nastri',
-                items: [
-                    { name: 'Etichette Elettroniche', img: '/articoli/etichette/Screenshot_2025-09-09-12-02-36-306_com.brave.browser_nightly-edit.jpg', desc: 'Modernizza la tua farmacia con etichette elettroniche per prezzi sempre aggiornati e chiari.', minQty: 50 },
-                    { name: 'Prezzatrice', img: '/articoli/etichette/Screenshot_2025-09-09-12-02-55-277_com.brave.browser_nightly-edit.jpg', desc: 'Rotoli di adesivi personalizzati con il tuo logo, perfetti per chiudere pacchetti o come sigillo di garanzia.', minQty: '10 rotoli' },
-                    { name: 'Etichette per prezzatrice', img: '/articoli/etichette/Screenshot_2025-09-09-12-03-05-527_com.brave.browser_nightly-edit.jpg', desc: 'Etichette adesive chiudipacco per garantire la sicurezza e l\'integrità dei prodotti.', minQty: '20 rotoli' },
-                    { name: 'Etichette personalizzate', img: '/articoli/etichette/Screenshot_2025-09-09-12-03-20-628_com.brave.browser_nightly-edit.jpg', desc: 'Nastro in raso di alta qualità con stampa personalizzata per confezioni regalo eleganti e uniche.', minQty: '5 rotoli' },
-                    // --- NUOVI SPAZI ETICHETTE ---
-                    { name: 'Applicatori e Sigilli', img: '/articoli/etichette/Screenshot_2025-09-09-12-03-29-738_com.brave.browser_nightly-edit.jpg', desc: 'Descrizione per il nuovo prodotto da inserire.', minQty: 100 },
-                    { name: 'Nastro Chiudipacco', img: '/articoli/etichette/Screenshot_2025-09-09-12-03-44-851_com.brave.browser_nightly-edit.jpg', desc: 'Descrizione per il nuovo prodotto da inserire.', minQty: 100 },
+                    { name: 'Shopper carta colorate piattina', img: '/articoli/shoppers/Screenshot_2025-09-09-11-46-37-231_com.brave.browser_nightly-edit.jpg', desc: 'Aggiungi un tocco di colore con le nostre shopper in carta con manico a piattina, disponibili in varie tonalità.', minQty: 250 },
+                    { name: 'Shopper Carta Cordino', img: '/articoli/shoppers/Screenshot_2025-09-09-11-46-48-724_com.brave.browser_nightly-edit.jpg', desc: 'Eleganti shopper in carta con manico a cordino, perfette per un packaging raffinato e resistente.', minQty: 100 },
+                    { name: 'Shopper carta colorate Cordino', img: '/articoli/shoppers/Screenshot_2025-09-09-11-46-57-791_com.brave.browser_nightly-edit.jpg', desc: 'La raffinatezza del manico a cordino si unisce a una vasta gamma di colori per shopper uniche.', minQty: 100 },
+                    { name: 'Shopper carta di Lusso', img: '/articoli/shoppers/Screenshot_2025-09-09-11-47-10-316_com.brave.browser_nightly-edit.jpg', desc: 'Packaging di alta gamma con finiture pregiate, per valorizzare i prodotti più importanti.', minQty: 100 },
+                    { name: 'Sacca in poliestere', img: '/articoli/shoppers/Screenshot_2025-09-17-17-32-22-118_com.microsoft.office.officehubrow-edit.jpg', desc: 'Pratiche sacche a zainetto in poliestere, personalizzabili e perfette come gadget promozionale.', minQty: 100 },
+                    { name: 'Shopper in TNT', img: '/articoli/shoppers/Screenshot_2025-09-09-11-47-31-170_com.brave.browser_nightly-edit.jpg', desc: 'Shopper in Tessuto Non Tessuto, leggere, resistenti e riutilizzabili. Un\'ottima scelta ecologica.', minQty: 100 },
+                    { name: 'Shopper con soffietto in TNT', img: '/articoli/shoppers/Screenshot_2025-09-09-11-47-40-802_com.brave.browser_nightly-edit.jpg', desc: 'La versione con soffietto delle nostre shopper in TNT, per una maggiore capienza e versatilità.', minQty: 100 },
                 ]
             },
             promozionali: {
                 title: 'Articoli Promozionali',
                 items: [
                     { name: 'Penna Rocket a sfera', img: '/articoli/accessori/Screenshot_2025-09-09-12-06-09-966_com.brave.browser_nightly-edit.jpg', desc: 'Un classico intramontabile. Penne personalizzate con logo e contatti della tua farmacia.', minQty: 500 },
-                    { name: 'Penna Funny Touch a sfera', img: '/articoli/accessori/Screenshot_2025-09-09-12-06-19-951_com.brave.browser_nightly-edit.jpg', desc: 'Utili e pratici porta pillole da viaggio, un gadget apprezzato da tutti i clienti.', minQty: 250 },
-                    { name: 'Penna Vania a Scatto', img: '/articoli/accessori/Screenshot_2025-09-09-12-06-30-260_com.brave.browser_nightly-edit.jpg', desc: 'Proteggi i tuoi clienti dalla pioggia con un ombrello personalizzato, garantendo grande visibilità al tuo brand.', minQty: 100 },
+                    { name: 'Penna Funny Touch a sfera', img: '/articoli/accessori/Screenshot_2025-09-09-12-06-19-951_com.brave.browser_nightly-edit.jpg', desc: 'Moderna penna a sfera con gommino touch, perfetta per l\'uso su smartphone e tablet.', minQty: 250 },
+                    { name: 'Penna Vania a Scatto', img: '/articoli/accessori/Screenshot_2025-09-09-12-06-30-260_com.brave.browser_nightly-edit.jpg', desc: 'Elegante e funzionale, questa penna a scatto è un gadget promozionale di sicuro successo.', minQty: 100 },
                     { name: 'Ombrello richiudibile', img: '/articoli/accessori/Screenshot_2025-09-09-12-06-41-459_com.brave.browser_nightly-edit.jpg', desc: 'Camici professionali per uomo e donna, personalizzabili con ricamo del logo della farmacia.', minQty: 10 },
-                     // --- NUOVI SPAZI PROMOZIONALI ---
-                    { name: 'Ombrello Grande', img: '/articoli/accessori/Screenshot_2025-09-09-12-06-51-446_com.brave.browser_nightly-edit.jpg', desc: 'Descrizione per il nuovo prodotto da inserire.', minQty: 100 },
-                    { name: 'Camice Donna', img: '/articoli/accessori/Screenshot_2025-09-09-12-06-59-746_com.brave.browser_nightly-edit.jpg', desc: 'Descrizione per il nuovo prodotto da inserire.', minQty: 100 },
-                    { name: 'Camice Uomo', img: '/articoli/accessori/Screenshot_2025-09-09-12-07-09-202_com.brave.browser_nightly-edit.jpg', desc: 'Descrizione per il nuovo prodotto da inserire.', minQty: 100 },
-                    { name: 'Porta Pillole', img: '/articoli/accessori/Screenshot_2025-09-09-12-07-17-352_com.brave.browser_nightly-edit.jpg', desc: 'Descrizione per il nuovo prodotto da inserire.', minQty: 100 },
-                    { name: 'Calendari Personalizzati', img: '/articoli/accessori/Screenshot_2025-09-09-12-07-51-419_com.brave.browser_nightly-edit.jpg', desc: 'Descrizione per il nuovo prodotto da inserire.', minQty: 100 },
-                    
+                    { name: 'Ombrello Grande', img: '/articoli/accessori/Screenshot_2025-09-09-12-06-51-446_com.brave.browser_nightly-edit.jpg', desc: 'Proteggi i tuoi clienti dalla pioggia con un ombrello personalizzato, garantendo grande visibilità al tuo brand.', minQty: 100 },
+                    { name: 'Camice Donna', img: '/articoli/accessori/Screenshot_2025-09-09-12-06-59-746_com.brave.browser_nightly-edit.jpg', desc: 'Camice professionale con taglio femminile, comodo e resistente, personalizzabile con ricamo.', minQty: 100 },
+                    { name: 'Camice Uomo', img: '/articoli/accessori/Screenshot_2025-09-09-12-07-09-202_com.brave.browser_nightly-edit.jpg', desc: 'Camice da lavoro per uomo, realizzato con tessuti di alta qualità per la massima durata.', minQty: 100 },
+                    { name: 'Porta Pillole', img: '/articoli/accessori/Screenshot_2025-09-09-12-07-17-352_com.brave.browser_nightly-edit.jpg', desc: 'Utili e pratici porta pillole da viaggio, un gadget apprezzato da tutti i clienti.', minQty: 100 },
                 ]
             },
-            attrezzatura: {
-                title: 'Attrezzatura per Farmacia',
+            
+            etichette: {
+                title: 'Etichette e Nastri',
                 items: [
-                    
-                    { name: 'Sistema Elimina-Code', img: '/articoli/code/Screenshot_2025-09-09-16-20-16-875_com.brave.browser_nightly-edit.jpg', desc: 'Kit completo di sistema elimina-code con display, telecomando e distributore di ticket per gestire al meglio il flusso di clienti.', minQty: 1 },
-                    
-                    
+                    { name: 'Etichette Elettroniche', img: '/articoli/etichette/Screenshot_2025-09-09-12-02-36-306_com.brave.browser_nightly-edit.jpg', desc: 'Modernizza la tua farmacia con etichette elettroniche per prezzi sempre aggiornati e chiari.', minQty: 50 },
+                    { name: 'Prezzatrice', img: '/articoli/etichette/Screenshot_2025-09-09-12-02-55-277_com.brave.browser_nightly-edit.jpg', desc: 'Strumento indispensabile per etichettare i prodotti in modo rapido, preciso e professionale.', minQty: '1' },
+                    { name: 'Etichette per prezzatrice', img: '/articoli/etichette/Screenshot_2025-09-09-12-03-05-527_com.brave.browser_nightly-edit.jpg', desc: 'Rotoli di ricambio per prezzatrici, disponibili in vari formati e colori.', minQty: '20 rotoli' },
+                    { name: 'Cestini Spesa', img: '/articoli/code/Screenshot_2025-09-17-17-43-41-040_com.microsoft.office.officehubrow-edit.jpg', desc: 'Cestini per la spesa leggeri e maneggevoli per migliorare l\'esperienza d\'acquisto dei clienti.', minQty: 10 },
+                    { name: 'Sistema Elimina-Code', img: '/articoli/code/Screenshot_2025-09-09-16-20-16-875_com.brave.browser_nightly-edit.jpg', desc: 'Kit completo per la gestione delle file, per un servizio più ordinato ed efficiente.', minQty: 1 },
+                    { name: 'Etichette personalizzate', img: '/articoli/etichette/Screenshot_2025-09-09-12-03-20-628_com.brave.browser_nightly-edit.jpg', desc: 'Rotoli di adesivi personalizzati con il tuo logo, perfetti per chiudere pacchetti o come sigillo.', minQty: '10 rotoli' },
+                    { name: 'Applicatori e Sigilli', img: '/articoli/etichette/Screenshot_2025-09-09-12-03-29-738_com.brave.browser_nightly-edit.jpg', desc: 'Accessori per applicare sigilli di garanzia, per la massima sicurezza dei tuoi prodotti.', minQty: 100 },
+                    { name: 'Calendari Personalizzati', img: '/articoli/accessori/Screenshot_2025-09-09-12-07-51-419_com.brave.browser_nightly-edit.jpg', desc: 'Un omaggio utile e sempre gradito. Personalizza i calendari con il logo della tua farmacia.', minQty: 100 },
+                    { name: 'Nastro Chiudipacco', img: '/articoli/etichette/Screenshot_2025-09-09-12-03-44-851_com.brave.browser_nightly-edit.jpg', desc: 'Nastro adesivo personalizzato per sigillare le confezioni e promuovere il tuo brand.', minQty: 100 },
                 ]
-            }
+            },
         };
-
         // --- GESTIONE ANIMAZIONI ON-SCROLL ---
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -364,7 +376,7 @@
                 openModal(card.dataset.category);
             });
 
-            // --- NUOVO: Logica per effetto 3D Tilt ---
+            // --- Logica per effetto 3D Tilt ---
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
@@ -372,8 +384,8 @@
                 const width = rect.width;
                 const height = rect.height;
 
-                const rotateY = (x - width / 2) / width * -20; // Inclinazione max 10 gradi
-                const rotateX = (y - height / 2) / height * 20; // Inclinazione max 10 gradi
+                const rotateY = (x - width / 2) / width * -20;
+                const rotateX = (y - height / 2) / height * 20;
                 
                 card.style.setProperty('--rotateX', `${rotateX}deg`);
                 card.style.setProperty('--rotateY', `${rotateY}deg`);
@@ -394,7 +406,7 @@
             }
         });
         
-        // --- NUOVO: Logica per bottone magnetico ---
+        // --- Logica per bottone magnetico ---
         const magneticButton = document.querySelector('.magnetic-button');
         if (magneticButton) {
             const btnText = magneticButton.querySelector('.btn-text');
@@ -418,3 +430,4 @@
 </script>
 </body>
 </html>
+
