@@ -26,6 +26,8 @@
     }
     .bg-pharma-green { background-color: var(--pharma-green); }
     .text-pharma-green { color: var(--pharma-green); }
+    .text-welcome-accent-green { color: var(--welcome-accent-green); }
+
 
     /* --- FONT SPECIALI PER LA SEZIONE DI BENVENUTO --- */
     .font-serif-display { font-family: 'Playfair Display', serif; }
@@ -106,6 +108,31 @@
         opacity: 1;
     }
 
+    /* --- NUOVA ANIMAZIONE: Pulsante Busta Animata --- */
+    .animated-envelope-button {
+        display: inline-block;
+        position: relative;
+        animation: floatAnimation 4s ease-in-out infinite;
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.3s ease;
+    }
+
+    .animated-envelope-button:hover {
+        animation-play-state: paused; /* Ferma l'animazione di float al passaggio del mouse */
+        transform: translateY(-8px) scale(1.1);
+        filter: drop-shadow(0 10px 15px rgba(144, 214, 148, 0.4)); /* Aggiunge un'ombra colorata */
+    }
+
+    .animated-envelope-button:active {
+        transform: translateY(-2px) scale(1.05);
+        transition-duration: 0.1s;
+    }
+
+    @keyframes floatAnimation {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-15px); }
+        100% { transform: translateY(0px); }
+    }
+
 
     /* --- EFFETTO: Bottone Magnetico --- */
     .magnetic-button {
@@ -151,9 +178,19 @@
 </header>
 
 <main>
-    <!-- NUOVA SEZIONE DI BENVENUTO -->
-    <section id="welcome" class="min-h-screen flex items-center justify-center text-center p-6 overflow-hidden" style="background-color: var(--welcome-bg-green);">
-        <div class="text-white">
+    <!-- SEZIONE DI BENVENUTO MODIFICATA -->
+    <section id="welcome" class="min-h-screen flex flex-col items-center justify-center text-center p-6 overflow-hidden" style="background-color: var(--welcome-bg-green);">
+        
+        <!-- Contenitore per il pulsante animato -->
+        <div class="flex-grow flex items-center justify-center pt-20">
+            <a href="#catalogo" class="animated-envelope-button reveal" title="Vai al catalogo">
+                <!-- IMPORTANTE: Sostituisci questo SVG con il tag <img> della tua immagine -->
+              <img src="/1758171278012.png" alt="Logo AZ Farma Packaging" class="w-59">
+            </a>
+        </div>
+    
+        <!-- Contenitore per il testo -->
+        <div class="text-white pb-16">
             <h1 class="font-serif-display text-6xl md:text-8xl lg:text-9xl font-bold leading-none">
                 <span class="block welcome-text-animation welcome-line-1">Fatti notare,</span>
                 <span class="block welcome-text-animation welcome-line-2">anche nei</span>
@@ -162,6 +199,7 @@
                 dettagli.
             </p>
         </div>
+
     </section>
 
     <!-- Sezione Catalogo Prodotti -->
@@ -197,8 +235,7 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="category-card reveal reveal-delay-3" data-category="etichette">
+                  <div class="category-card reveal reveal-delay-3" data-category="etichette">
                     <div class="card-content bg-white rounded-lg shadow-lg overflow-hidden group cursor-pointer h-full flex flex-col">
                         <div class="h-48 bg-cover bg-center" style="background-image: url('/articoli/etichette.jpg')"></div>
                         <div class="p-6 flex-grow">
@@ -355,7 +392,6 @@
                     productItem.style.transform = 'translateY(0)';
                 }, 100 * (index + 1));
             });
-            
             modalBody.appendChild(productGrid);
             modal.classList.remove('opacity-0', 'pointer-events-none', 'invisible');
             modal.classList.add('open');
@@ -430,4 +466,3 @@
 </script>
 </body>
 </html>
-
